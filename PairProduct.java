@@ -1,3 +1,9 @@
+/*
+   Student: Alex L. Deweert
+   Student ID: V00855767
+   Assignment 1
+*/
+
 /* PairProduct.java
    CSC 225 - Spring 2017
    Programming Assignment 1 - Template for PairProduct
@@ -20,6 +26,10 @@ import java.util.Vector;
 import java.util.Arrays;
 import java.io.File;
 
+import java.io.PrintWriter;
+import java.io.File;
+import java.io.IOException;
+
 //Do not change the name of the PairProduct class
 public class PairProduct{
 	/* PairProduct225()
@@ -30,11 +40,39 @@ public class PairProduct{
 		Do not change the function signature (name/parameters).
 	*/
 	public static boolean PairProduct225(int[] A){
-		
-		int n = A.length;
 
-		/* Your code here */
-		
+		/*Populate an array of length 226 (since we're including zero in the inputs)
+		* so each value of the array A, not including zero or numbers greater than 225, 
+		* is placed into the new array at index position equal to it's value */
+		int n = A.length;
+		int fifteenCount = 0;
+		int[] arr = new int[226];
+		for( int i = 0; i < A.length; i++ ) {
+			if( A[i] != 0 && A[i] <= 225 ) {
+				arr[ A[i] ] = A[i];
+
+				/*Note the special case for 15*/
+				if( A[i] == 15 ) {
+					fifteenCount++;
+				}
+			}
+		}
+
+		/*Check the populated array. This array contains all values from the list passed in, 
+		* located in its corresponding index, ie 15 is at arr[15]. 
+		* We determine: 1) If the number is not zero, 2) If the number divides 225
+		* If it does, the pair exists, and there are either no fifteens or at least 2;
+		* This logic is extensible by determining if 225 or its analog is the product
+		* of a perfect square. Here we take a shortcut and just recognize 15*15 == 225*/
+		int complement = 0;
+		for( int i = 0; i < arr.length; i++ ) {
+			if( arr[i] > 0 && 225 % arr[i] == 0 ) {
+				complement = 225 / arr[i];
+				if( arr[complement] != 0 && fifteenCount != 1){
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 

@@ -1,0 +1,96 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[letterpaper, portrait, margin=1in]{geometry}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\pagestyle{fancy}
+
+\begin{document}
+\fontsize{4mm}{4.8mm}\selectfont
+\lhead{ CSC 225 B03\\ University of Victoria\\}
+\chead{ Assignment 1\\ }
+\rhead{ Alex L. Deweert \\ V00855767 \\}
+\vspace*{.25\baselineskip} 
+
+
+
+\begin{enumerate}
+
+\item Slowest to fastest $\Rightarrow$ $n! \geqslant 2^{2^n} \geqslant 5^n \geqslant n^5 \geqslant 5n \geqslant 2nlog(logn) \geqslant log^5n \geqslant 4^{logn} \geqslant n^{0.10} \geqslant 5$ 
+
+\item We can show that if $S(n) = \sum_{i=1}^{n} logi = log(n!)$ then $S(n) = \theta(f(n))$ and that $f(n) = nlogn$.
+\begin{flalign}\nonumber
+\sum_{i=1}^{n} logi &= log(1)+log(2)+...+log(n) &&\\\nonumber
+&= log(1\cdot2\cdot\text{...}\cdot n)\\\nonumber
+\therefore f(n) &= log(n!)
+\end{flalign}
+
+We must show that $S(n) \leqslant c_1 \cdot f(n)$ and $c_1 \epsilon \mathbb{R}$, $c_1 > 0$ 
+\begin{flalign}\nonumber
+log(n!)&= log(1\cdot2\cdot\text{...}\cdot n)&&\\\nonumber
+&= log(1)+log(2)+...+log(n)\\\nonumber
+&\leqslant log(n) + ... + log(n)\\\nonumber
+&\leqslant nlog(n)\nonumber
+\end{flalign}
+We must also show that $S(n)\geqslant c_2 \cdot f(n)$ and $c_2 \epsilon \mathbb{R}$, $c_2 > 0$ 
+\begin{flalign}\nonumber
+log(n!) &= log(1/2)+log(1)+log(3/2)+log(2)+...+log(n) &&\\\nonumber
+&\text{Considering only half of n terms we have...}\\\nonumber
+log(n!)&\geqslant log(1/2)+log(3/2)+log(5/2)+...+log(n) \\\nonumber
+&\geqslant log(n/2)+log(n/2 + 1)+log(n/2 + 2)+...+log(n/2) \\\nonumber
+&\geqslant log(n/2)+log(n/2)+log(n/2)+...+\frac{n}{2}\cdot log(n/2) \\\nonumber
+\therefore log(n!) &\geqslant \frac{n}{2}\cdot log(n/2)
+\end{flalign}
+Since $nlogn \geqslant log(n!) \geqslant \frac{n}{2}log(n/2)$ then $S(n) = \theta( nlogn)$
+
+\item
+	\begin{enumerate}[label=(\alph*)]
+		\item Each iteration of the inner loop here depends on the state of k in the outer loop. The inner variable i is incremented up to $k/2$ times, then $k/4$ times etc. We have that:	
+	\begin{flalign}\nonumber
+	k + k/2 + k/4 + k/8 &=k(1 + 1/2 + 1/4 + ... 1/n) &&\nonumber
+	\end{flalign}
+	Per the definition of the geometric series, a series with ratio $\frac{1}{2}$ will converge to $\frac{1}{1-\frac{1}{2}}$
+	\begin{flalign}\nonumber
+	\Rightarrow k(1 + 1/2 + 1/4 + ... 1/n) &= k\cdot \sum_{i=0}^{n}\frac{1}{2^i} &&\\\nonumber
+	&= k\bigg(\frac{1}{1-\frac{1}{2}}\bigg)\\\nonumber
+	&= 2k
+	\end{flalign}
+	
+	$\therefore$ order is O(n)
+	
+	\item Order is O(n). Each iteration of the inner loop depends on the state of the outer loop. The inner variable j is incremented up to 2, then 4, then 8 ... times. But for some n, the outer loop variable i is doubled and only executes if i $<$ n. So the number of executions occur a fixed number of times for values of n for which i does not exceed a certain threshold, ie; for n = 3 or n = 4, the algorithm only executes 3 times. In the range [9, 16] implies 15 executions. In the range [17, 30] implies 31 executions. So the order of growth appears to be linear since the execution times are at most (n-1) for all n.
+		
+	\item Order is O(nlogn). For each iteration of the outer loop, the inner loop executes n times. Then the outer loop only executes if its less than n, but since we test $i*=2$ on each iteration, i grows exponentially, so it will execute approximately $logn$ times.\\
+	For example, if n = 34, then the outer loop executes when i = 1, 2, 4, 8, 16, 32 for a total of 6 executions. This is approximately equal to $\frac{log_{10}(34)}{log_{10}(2)} \approx 5$. So we have (outer loop)$\cdot$(inner loop) = $log_2n \times n = n\cdot log_2n = O(nlogn)$ .
+	\end{enumerate}
+\item Prove that $ \sum_{i=1}^{n} \frac{1}{i(i+1)} = \frac{n}{n+1}$ for $n \geqslant 1$.\\\\
+\underline{Base case}: $\frac{1}{1(1+1)} = \frac{1}{1+1}$ \checkmark\\\\
+\underline{Induction Hypothesis}: Suppose that $ \sum_{k=1}^{k} \frac{1}{k(k+1)} = \frac{k}{k+1}$ is true for all $k\geqslant1$, we look at the case for k+1.\\\\
+\underline{Induction step}: We must show that, if the hypothesis is true for k, it follows that it is true for k+1.\\\\
+Assume: $\frac{1}{1\cdot2} + \frac{1}{2\cdot3} + \frac{1}{3\cdot4} + ... + \frac{1}{k\cdot(k+1)} = \frac{k}{k+1} \text{for all k} \geqslant 1$\\\\
+We prove for k+1:
+\begin{flalign}\nonumber
+\frac{1}{1\cdot2} + ... + \frac{1}{k(k+1)} + \frac{1}{(k+1)(k+2)} &= \frac{k+1}{k+2} &&\\\nonumber
+\frac{k}{k+1} + \frac{1}{(k+1)(k+2)}&= \frac{k+1}{k+2}\\\nonumber
+\frac{k(k+2)}{(k+1)(k+2)} + \frac{1}{(k+1)(k+2)}&= \frac{k+1}{k+2}\\\nonumber
+\frac{k^2+2k+1}{(k+1)(k+2)} &= \frac{k+1}{k+2}\\\nonumber
+\frac{(k+1)^2}{(k+1)(k+2)} &= \frac{k+1}{k+2}\\\nonumber
+\frac{k+1}{k+2} &= \frac{k+1}{k+2}\text{\checkmark}\\\nonumber
+\end{flalign}
+$\therefore$ by the principle of mathematical induction, $ \sum_{i=1}^{n} \frac{1}{i(i+1)} = \frac{n}{n+1}$ for $n \geqslant 1$
+\\\\\\\\\\
+\item We add the values from [0, n] with the values in the array at indexes [0, n-1]. We then subtract the arraySum from the rangeSum, and that is the missing number:\\\\
+arraySum $\leftarrow 0$\\
+rangeSum $\leftarrow 0$\\
+for $i \leftarrow 0$ to arrayLength - 1 do\\
+\setlength\parindent{24pt}
+\indent arraySum $\leftarrow$ arr[i] + arraySum\\\\
+for $j \leftarrow 0$ to arrayLength do\\
+\setlength\parindent{24pt}
+\indent rangeSum $\leftarrow$ rangeSum + j\\\\
+return rangeSum - arraySum
+\end{enumerate}
+\end{document}
